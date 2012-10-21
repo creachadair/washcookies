@@ -26,8 +26,10 @@ sep  -- the separator character for criteria.
 key  -- the name of a cookie field.
 op   -- a comparison operator.
 arg  -- an argument for comparison (possibly empty).
+```
 
 Operators:
+```
  = case-insensitive string equality.
  ? test for key existence in the cookie.
  ~ regular expression search (Python regular expressions).
@@ -41,11 +43,11 @@ argument starts with a period (`.`) then it matches if the argument is a suffix
 of the value.
 
 Cookies have the following fields:
-- *domain*   The host or domain for which the cookie is delivered.
-- *path*     The path for which the cookie is delivered.
-- *name*     The name of the cookie.
-- *value*    The content of the cookie.
-- *httponly* The HTTPOnly setting for this cookie.
+- *domain*:   The host or domain for which the cookie is delivered.
+- *path*:     The path for which the cookie is delivered.
+- *name*:     The name of the cookie.
+- *value*:    The content of the cookie.
+- *httponly*: The HTTPOnly setting for this cookie.
 
 Examples:
 + Accept all cookies from `banksite.com`
@@ -78,6 +80,7 @@ Examples:
 ```
 ! value=SaveMe
 ```
+
 ## Installation ##
 
 The distribution has a `setup.py` that should do the right thing:
