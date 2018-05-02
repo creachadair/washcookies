@@ -150,9 +150,9 @@ gc_field_map = {
     'value':        'Value',
     'path':         'Path',
     'expires_utc':  'Expires',
-    'secure':       'Secure',
-    'httponly':     'HttpOnly',
-    }
+    'is_secure':    'Secure',
+    'is_httponly':  'HttpOnly',
+}
 
 # Chrome uses the Windows proleptic epoch, 1/1/1600.
 # This is the value of the Unix 1/1/70 epoch in that scheme.
