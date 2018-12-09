@@ -1,0 +1,36 @@
+/System/Library/Foundation/Versions/Current/Headers/NSHTTPCookie.h
+@method initWithProperties
+
+Label            Type        Req?  Description
+CookieComment    string      #f    Comment for the cookie, default nil.
+CookieCommentURL string      #f    Comment URL for the cookie, default nil.
+CookieDomain     string      [1]   Domain for the cookie (inferred).
+CookieDiscard    string[2]   #f    Discard cookie at end of session?[4]
+CookieExpires    date/string #f    Expiration date, ignored for version 1+.
+CookieMaximumAge string      #t    Seconds cookie should be kept, default "0".
+CookieName       string      #t    Name of the cookie.
+CookieOriginURL  string/URL  [1]   URL that set this cookie.[3]
+CookiePath       string      #f    Path for the cookie (inferred), default "/".
+CookiePort       csv         #f    Ports for the cookie (integers), default "".
+CookieSecure     string[2]   #f    Transmit only over secure channel?
+CookieValue      string      #t    Value of the cookie.
+CookieVersion    string      #f    Version of the cookie, "0" or "1", default "0".
+
+[1] A value for either CookieOriginURL or CookieDomain must be specified.
+[2] Values "TRUE" or "FALSE", default is "FALSE".
+[3] Used as default for other fields as noted by "(inferred)".
+[4] Unless CookieMaximumAge is not specified, in which case default is "TRUE".
+
+/System/Library/FoundationVersions/Current/Headers/NSHTTPCookieStorage.h
+@method setCookies
+
+You can set cookies using a "main document URL", which I suspect has something
+to do with which cookies are stored on a given page in the file.
+
+Or maybe all the cookies for a given web page are on a cookie page?
+
+The Foundation library contains an undefined _crc32 linkage point, suggesting
+maybe it uses that for a checksum internally.
+
+
+
