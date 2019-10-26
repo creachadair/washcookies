@@ -68,7 +68,6 @@ import cookies
 # Regular expression matching a rule in ~/.cookierc
 rule_re = re.compile(r'(\w+)(!?[=~@?])(.*)$')
 
-# {{ parse_rule(s)
 
 def parse_rule(s):
     """Parse a cookie rule, returning a tuple (f, rs) where
@@ -83,19 +82,14 @@ def parse_rule(s):
     for r in s[2:].split(sep):
         m = rule_re.match(r)
         if m:
-            rs.append((m.group(2),
-                       m.group(1).lower(),
-                       m.group(3)))
+            rs.append((m.group(2), m.group(1).lower(), m.group(3)))
         else:
             rs.append(('@', 'domain', r))
 
     return f, rs
 
-# }}
 
-# {{ unparse_rule(r, flag, sep)
-
-def unparse_rule(r, flag = '-', sep = ' '):
+def unparse_rule(r, flag='-', sep=' '):
     """Unparse a cookie rule, returning a string.  The flag is the rule type,
     and sep is the desired criterion separator.
     """
@@ -108,14 +102,12 @@ def unparse_rule(r, flag = '-', sep = ' '):
 
     return sep.join(out)
 
-# }}
-
-# {{ match_rule(cookie, rule)
 
 def match_rule(cookie, rule):
     """Returns True if the specified cookie (a dict) matches the given list of
     rule criteria; otherwise False.
     """
+
     def match_one(op, key, arg):
         neg = op.startswith('!')
         if neg: op = op[1:]
@@ -148,11 +140,8 @@ def match_rule(cookie, rule):
     else:
         return True
 
-# }}
 
-# {{ load_rules(user)
-
-def load_rules(user = None):
+def load_rules(user=None):
     """Load the list of cookie rules from ".cookierc" in the user's home
     directory.  Returns a tuple of (a, r, k), where a is a list of accept
     rules, r is a list of reject rules, and k is a list of keep rules.
@@ -162,7 +151,9 @@ def load_rules(user = None):
     cpath = os.path.expanduser('~%s/.cookierc' % (user or ''))
     try:
         with open(cpath, 'rt') as fp:
-            a = [] ; r = [] ; k = []
+            a = []
+            r = []
+            k = []
             for line in fp:
                 if line.isspace() or line.startswith('#'):
                     continue
@@ -179,9 +170,6 @@ def load_rules(user = None):
     except (OSError, IOError) as e:
         return ([parse_rule('+ .')], [])
 
-# }}
-
-# {{ find_bad_cookies(cookies, allow, deny)
 
 def find_bad_cookies(cookies, allow, deny, keep):
     """Return the positions of all the cookies in the list that are not matched
@@ -212,11 +200,8 @@ def find_bad_cookies(cookies, allow, deny, keep):
 
     return kill
 
-# }}
 
-# {{ summarize_changes(cookies, icky, path, ofp)
-
-def summarize_changes(cookies, icky, path, ofp = sys.stderr):
+def summarize_changes(cookies, icky, path, ofp=sys.stderr):
     """Print a human-readable description of what is going to be deleted to the
     specified file handle.
 
@@ -231,24 +216,24 @@ def summarize_changes(cookies, icky, path, ofp = sys.stderr):
         print("No unwanted cookies found.", file=ofp)
         return
 
-    print("Removing %d unwanted cookie%s:" % (
-        len(icky), "s" if len(icky) != 1 else ""), file=ofp)
-    for pos in sorted(icky, key = lambda p: cookies[p]['Domain']):
+    print(
+        "Removing %d unwanted cookie%s:" % (len(icky),
+                                            "s" if len(icky) != 1 else ""),
+        file=ofp)
+    for pos in sorted(icky, key=lambda p: cookies[p]['Domain']):
         reason = icky[pos]
         tag = u' \N{black square} ' if reason else u' \N{white square} '
-        print(tag + u'%-30.30s %s=%-20.20s' % (
-            cookies[pos]['Domain'],
-            cookies[pos]['Name'],
-            cookies[pos]['Value']), file=ofp)
+        print(
+            tag + u'%-30.30s %s=%-20.20s' %
+            (cookies[pos]['Domain'], cookies[pos]['Name'],
+             cookies[pos]['Value']),
+            file=ofp)
         if explain and reason:
             print('   %s' % \
                   unparse_rule(reason, flag = 'rejected by'), file=ofp)
         elif explain:
             print('   no matching rule', file=ofp)
 
-# }}
-
-# {{ process_apple_cookies(allowed, denied, kept)
 
 def process_apple_cookies(allowed, denied, kept):
     """Process old-style (pre-Lion) cookies for Apple Safari."""
@@ -256,11 +241,11 @@ def process_apple_cookies(allowed, denied, kept):
     try:
         cdb = cookies.read_apple_cookies(cfpath)
     except IOError as e:
-        return # No cookies found, skip the rest.
+        return  # No cookies found, skip the rest.
 
     icky = find_bad_cookies(cdb, allowed, denied, kept)
     summarize_changes(cdb, icky, cfpath)
-    for pos in sorted(icky, reverse = True):
+    for pos in sorted(icky, reverse=True):
         cdb.pop(pos)
 
     if dry_run:
@@ -268,12 +253,10 @@ def process_apple_cookies(allowed, denied, kept):
     else:
         if icky:
             cookies.write_apple_cookies(cdb, cfpath)
-        print("Kept %d cookie%s." % (
-            len(cdb), "s" if len(cdb) != 1 else ""), file=sys.stderr)
+        print(
+            "Kept %d cookie%s." % (len(cdb), "s" if len(cdb) != 1 else ""),
+            file=sys.stderr)
 
-# }}
-
-# {{ process_binary_cookies(allowed, denied, kept)
 
 def process_binary_cookies(allowed, denied, kept):
     """Process new-style (post-Lion, binary) cookies for Apple Safari."""
@@ -281,11 +264,11 @@ def process_binary_cookies(allowed, denied, kept):
     try:
         cdb = cookies.read_binary_cookies(cfpath)
     except (IOError, NotImplementedError) as e:
-        return # No cookies found, skip the rest.
+        return  # No cookies found, skip the rest.
 
     icky = find_bad_cookies(cdb, allowed, denied, kept)
     summarize_changes(cdb, icky, cfpath)
-    for pos in sorted(icky, reverse = True):
+    for pos in sorted(icky, reverse=True):
         cdb.pop(pos)
 
     if dry_run:
@@ -293,12 +276,10 @@ def process_binary_cookies(allowed, denied, kept):
     else:
         if icky:
             cookies.write_binary_cookies(cdb, cfpath)
-        print("Kept %d cookie%s." % (
-            len(cdb), "s" if len(cdb) != 1 else ""), file=sys.stderr)
+        print(
+            "Kept %d cookie%s." % (len(cdb), "s" if len(cdb) != 1 else ""),
+            file=sys.stderr)
 
-# }}
-
-# {{ process_google_cookies(allowed, denied, kept)
 
 def process_google_cookies(allowed, denied, kept):
     """Process cookies for Google Chrome."""
@@ -307,9 +288,9 @@ def process_google_cookies(allowed, denied, kept):
     try:
         cdb = cookies.read_google_cookies(cfpath)
     except IOError:
-        return # No cookies found, skip the rest.
+        return  # No cookies found, skip the rest.
 
-    icky  = find_bad_cookies(cdb, allowed, denied, kept)
+    icky = find_bad_cookies(cdb, allowed, denied, kept)
     kills = list(cdb[p] for p in sorted(icky))
     nkept = len(cdb) - len(kills)
     summarize_changes(cdb, icky, cfpath)
@@ -319,12 +300,10 @@ def process_google_cookies(allowed, denied, kept):
     else:
         if kills:
             cookies.delete_google_cookies(kills, cfpath)
-        print("Kept %d cookie%s." % (
-            nkept, "s" if nkept != 1 else ""), file=sys.stderr)
+        print(
+            "Kept %d cookie%s." % (nkept, "s" if nkept != 1 else ""),
+            file=sys.stderr)
 
-# }}
-
-# {{ main(argv)
 
 def main(argv):
     """Command-line entry point."""
@@ -336,16 +315,19 @@ def main(argv):
     process_google_cookies(allowed, denied, kept)
     return 0
 
-# }}
 
 if __name__ == "__main__":
     res = main(sys.argv[1:])
     sys.exit(res)
 
 __all__ = (
-    "parse_rule", "match_rule", "load_rules",
-    "cookie_path", "read_cookies", "write_cookies",
+    "parse_rule",
+    "match_rule",
+    "load_rules",
+    "cookie_path",
+    "read_cookies",
+    "write_cookies",
     "find_bad_cookies",
-    )
+)
 
 # Here there be dragons
