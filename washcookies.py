@@ -46,7 +46,7 @@
 ##  httponly -- the HTTPOnly setting for this cookie.
 ##
 ## Examples:
-## 1. Accept all cookies from banksite.com
+## 1. Accept all cookies from host names ending in banksite.com
 ##    + .banksite.com
 ##
 ## 2. Reject all Google Analytics cookies
@@ -132,7 +132,9 @@ def match_rule(cookie, rule):
         if op == '~':
             res = bool(re.compile(arg).search(val))
         elif op == '@' and arg.startswith('.'):
-            res = val.lower().endswith(arg[1:].lower())
+            # E.g., .foo.com matches "foo.com" or "bar.foo.com"
+            vl, al = val.lower(), arg.lower()
+            res = (vl == al[1:]) or vl.endswith(al)
         elif op == '?':
             res = exists
         else:
