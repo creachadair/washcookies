@@ -60,7 +60,7 @@
 ##
 from __future__ import with_statement, print_function
 
-__version__ = "1.001"
+__version__ = "1.2.0"
 
 import os, plistlib, pwd, re, sys, tempfile
 import cookies
