@@ -107,7 +107,6 @@ def match_rule(cookie, rule):
     """Returns True if the specified cookie (a dict) matches the given list of
     rule criteria; otherwise False.
     """
-
     def match_one(op, key, arg):
         neg = op.startswith('!')
         if neg: op = op[1:]
@@ -216,18 +215,16 @@ def summarize_changes(cookies, icky, path, ofp=sys.stderr):
         print("No unwanted cookies found.", file=ofp)
         return
 
-    print(
-        "Removing %d unwanted cookie%s:" % (len(icky),
-                                            "s" if len(icky) != 1 else ""),
-        file=ofp)
+    print("Removing %d unwanted cookie%s:" %
+          (len(icky), "s" if len(icky) != 1 else ""),
+          file=ofp)
     for pos in sorted(icky, key=lambda p: cookies[p]['Domain']):
         reason = icky[pos]
         tag = u' \N{black square} ' if reason else u' \N{white square} '
-        print(
-            tag + u'%-30.30s %s=%-20.20s' %
-            (cookies[pos]['Domain'], cookies[pos]['Name'],
-             cookies[pos]['Value']),
-            file=ofp)
+        print(tag + u'%-30.30s %s=%-20.20s' %
+              (cookies[pos]['Domain'], cookies[pos]['Name'],
+               cookies[pos]['Value']),
+              file=ofp)
         if explain and reason:
             print('   %s' % \
                   unparse_rule(reason, flag = 'rejected by'), file=ofp)
@@ -253,9 +250,8 @@ def process_apple_cookies(allowed, denied, kept):
     else:
         if icky:
             cookies.write_apple_cookies(cdb, cfpath)
-        print(
-            "Kept %d cookie%s." % (len(cdb), "s" if len(cdb) != 1 else ""),
-            file=sys.stderr)
+        print("Kept %d cookie%s." % (len(cdb), "s" if len(cdb) != 1 else ""),
+              file=sys.stderr)
 
 
 def process_binary_cookies(allowed, denied, kept):
@@ -276,9 +272,8 @@ def process_binary_cookies(allowed, denied, kept):
     else:
         if icky:
             cookies.write_binary_cookies(cdb, cfpath)
-        print(
-            "Kept %d cookie%s." % (len(cdb), "s" if len(cdb) != 1 else ""),
-            file=sys.stderr)
+        print("Kept %d cookie%s." % (len(cdb), "s" if len(cdb) != 1 else ""),
+              file=sys.stderr)
 
 
 def process_google_cookies(allowed, denied, kept):
@@ -300,9 +295,8 @@ def process_google_cookies(allowed, denied, kept):
     else:
         if kills:
             cookies.delete_google_cookies(kills, cfpath)
-        print(
-            "Kept %d cookie%s." % (nkept, "s" if nkept != 1 else ""),
-            file=sys.stderr)
+        print("Kept %d cookie%s." % (nkept, "s" if nkept != 1 else ""),
+              file=sys.stderr)
 
 
 def main(argv):

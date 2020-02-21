@@ -43,8 +43,8 @@ def get_apple_bincookie_path(user=None):
     Note: This function does not verify the existence of the file, it only
     computes the pathname.
     """
-    return os.path.join(
-        get_user_home(user), 'Library', 'Cookies', 'Cookies.binarycookies')
+    return os.path.join(get_user_home(user), 'Library', 'Cookies',
+                        'Cookies.binarycookies')
 
 
 def read_binary_cookies(path):
@@ -100,8 +100,8 @@ def get_apple_cookie_path(user=None):
     Note: This function does not verify the existence of the file, it only
     computes the pathname.
     """
-    return os.path.join(
-        get_user_home(user), 'Library', 'Cookies', 'Cookies.plist')
+    return os.path.join(get_user_home(user), 'Library', 'Cookies',
+                        'Cookies.plist')
 
 
 def read_apple_cookies(path):
@@ -137,9 +137,8 @@ def get_google_cookie_path(user=None):
     Note: This function does not verify the existence of the file, it
     only computes the pathname.
     """
-    return os.path.join(
-        get_user_home(user), 'Library', 'Application Support', 'Google',
-        'Chrome', 'Default', 'Cookies')
+    return os.path.join(get_user_home(user), 'Library', 'Application Support',
+                        'Google', 'Chrome', 'Default', 'Cookies')
 
 
 # Map from Google cookie table columns to canonical names.
