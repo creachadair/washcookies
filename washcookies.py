@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 ##
 ## Name:     washcookies.py
 ## Purpose:  Clean up Safari and Chrome web cookies.
@@ -113,7 +113,7 @@ def match_rule(cookie, rule):
         if neg: op = op[1:]
 
         exists = True
-        for k, v in cookie.iteritems():
+        for k, v in cookie.items():
             if key == k.lower():
                 val = v
                 break
