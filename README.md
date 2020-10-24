@@ -1,6 +1,9 @@
 washcookies
 ===========
 
+**Note:** This tool is no longer maintained; I have switched to a new
+implementation in https://github.com/creachadair/cookies.
+
 A tool to clean up MacOS browser cookies based on a user-defined file of rules
 
 This program edits the stored web cookies for the user who runs it, discarding
